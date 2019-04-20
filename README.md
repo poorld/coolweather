@@ -4,3 +4,5 @@
 - 网络请求: OkHttp
 - 解析JSON: gson
 - 图片加载和展示: Glide
+
+接口：http://guolin.tech/api/china
