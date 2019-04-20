@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<litepal>
+
+    <dbname value="cool_weather" />
+
+    <version value="1" />
+
+    <list>
+        <mapping class="com.teenyda.coolweather.db.Province" />
+        <mapping class="com.teenyda.coolweather.db.County" />
+        <mapping class="com.teenyda.coolweather.db.City" />
+    </list>
+</litepal>
