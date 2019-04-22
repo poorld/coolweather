@@ -25,3 +25,5 @@ http://guolin.tech/api/weather?cityid=CN101010100&key=6f05f822e8cd4e4187e831ea51
     ]
 }
 ```
+
+背景图接口:http://guolin.tech/api/bing_pic
