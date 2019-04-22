@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -67,10 +68,16 @@ public class WeatherActivity extends AppCompatActivity {
     private Button navButton;
 
 
+
+    private static final String TAG = "WeatherActivity";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
+
+        Log.d(TAG, "onCreate: ");
 
         /*
         * 背景图和状态栏融合
@@ -118,10 +125,11 @@ public class WeatherActivity extends AppCompatActivity {
 
         carWashText = (TextView) findViewById(R.id.car_wash_text);
         sportText = (TextView) findViewById(R.id.sport_text);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String weatherString = prefs.getString("weather", null);
 
-        final String weatherId;
+
+        final String weatherId ;
 
         if (weatherString != null) {
             // 缓存时直接解析天气数据
@@ -138,7 +146,7 @@ public class WeatherActivity extends AppCompatActivity {
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                requestWeather(weatherId);
+                requestWeather(prefs.getString("weather_id", null));
             }
         });
 
@@ -149,6 +157,13 @@ public class WeatherActivity extends AppCompatActivity {
             loadBingPic();
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+    }
+
 
     private void loadBingPic() {
         String requestBingPic = "http://guolin.tech/api/bing_pic";
@@ -198,9 +213,11 @@ public class WeatherActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         if (weather != null && "ok".equals(weather.status)) {
+
                             SharedPreferences.Editor editor = PreferenceManager
                                     .getDefaultSharedPreferences(WeatherActivity.this).edit();
                             editor.putString("weather", responseText);
+                            editor.putString("weather_id", weather.basic.weatherId);
                             editor.apply();
                             showWeatherInfo(weather);
                         } else {
